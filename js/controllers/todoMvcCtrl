@@ -1,0 +1,10 @@
+/**
+ * Created by Keum_nim on 2016. 6. 26..
+ * 컨트롤러 생성하기
+*/
+angular.module('todomvc')
+    .controller('todoMvcCtrl', function ($scope) {
+
+        $scope.message = 'Hello world!';
+
+    })
