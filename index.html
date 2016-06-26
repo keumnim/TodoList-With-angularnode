@@ -9,35 +9,31 @@
     <div ng-controller="todoMvcCtrl" class="container">  <!-- ng-app으로 todomvc 앵귤러 모듈 사용을 브라우저에게 알림 -->
         <h1>Todo List</h1>
 
-        <div>
+        <ul class="list-unstyled">
             <!-- Add form -->
-            <form ng-submit="addTodo(newTodoTitle)">
-                <div class="input-group">
-                    <input type="text" placeholder="What will you do?..." class="form-control"
-                           ng-model="newTodoTitle" autofocus>
-                    <span class="input-group-btn">
-                      <button type="submit" class="btn btn-success">Add</button>
-                    </span>
-                </div>
-            </form>
-        </div>
+            <li>
+                <form ng-submit="addTodo(newTodoTitle)">
+                    <div class="input-group">
+                        <input type="text" placeholder="What will you do?..." class="form-control"
+                               ng-model="newTodoTitle" value="s" autofocus>
+                        <span class="input-group-btn">
+                          <button type="submit" class="btn btn-success">Add</button>
+                        </span>
+                    </div>
+                </form>
+            </li>
+        </ul>
+
 
         <div>
-            <!-- todo List-->
-            <ul class="list-unstyled">
-                <li ng-repeat="todo in todos | filter: statusFilter">
-                    <div class="input-group">
-                      <span class="input-group-addon">
-                        <input type="checkbox" ng-model="todo.completed">
-                      </span>
-                      <input type="text" ng-model="todo.title" class="form-control">
-                      <span class="input-group-btn">
-                        <button ng-click="remove(todo.id)" class="btn btn-danger">Remove</button>
-                      </span><!-- ng-click 디렉티브로 컨트롤러의 remove() 함수와 연력-->
-                    </div>
+            <!-- todo List "Direct 설정"-->
+            <ul ng-repeat="todo in todos | filter:statusFilter" class="list-unstyled">
+                <li class="todo-item">
+                    <todo-item todo="todo" remove="remove(todo)" update="update(todo)"></todo-item>
                 </li>
             </ul>
         </div>
+
 
         <div>
             <!--  Filters -->
@@ -64,7 +60,8 @@
         <script src="js/app.js"></script>
         <!-- 컨드롤러 생성-->
         <script src="js/controllers/todoMvcCtrl"></script>
-
+        <!--다이렉드 설정-->
+        <script src="js/directives/todoItem.js"></script>
     </div>
 </body>
 </html>

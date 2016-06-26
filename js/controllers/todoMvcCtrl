@@ -23,12 +23,12 @@ angular.module('todomvc')
 
 
         /* todos에서 해당 id항목 삭제 */
-        $scope.remove = function (id) {
+        $scope.remove = function (todo) {
             console.log("function remove");
-            console.log("id::"+id)
+            console.log("id::"+todo.id)
             /*todos에서 해당항목 찾기*/
-            var findIdx = $scope.todos.findIndex(function (todo) {
-                return todo.id === id;
+            var findIdx = $scope.todos.findIndex(function (t) {
+                return t.id === todo.id;
             });
 
             console.log("findIdx::"+findIdx)
@@ -43,9 +43,10 @@ angular.module('todomvc')
         $scope.addTodo = function (newTodoTitle) {
             console.log("function addTodo");
             console.log("todoTitle::"+newTodoTitle);
+            if (newTodoTitle == undefined) return;
 
             /*들어오는 값이 ''이라면 return*/
-            newTodoTitle = newTodoTitle.trim();
+            var newTodoTitle = newTodoTitle.trim();
             if (newTodoTitle === '') return;
 
 
@@ -63,6 +64,8 @@ angular.module('todomvc')
             $scope.newTodoTitle = '';
         };
 
+
+        /* todos에서 completed된 항목 Clear */
         $scope.clearCompleted = function () {
             console.log("function clearCompleted");
 
@@ -72,6 +75,23 @@ angular.module('todomvc')
 
             angular.copy(incompletedTodos, $scope.todos);
 
+        };
+
+
+        /* todos에 해당 todoe update */
+        $scope.update = function (todo) {
+            console.log("function update");
+            if (!todo) return;
+
+            console.log("id::"+todo.id)
+            /*todos에서 해당항목 찾기*/
+            var findIdx = $scope.todos.findIndex(function (t) {
+                return t.id === todo.id;
+            });
+
+            /*update todo*/
+            $scope.todos[findIdx].title = todo.title;
+            $scope.todos[findIdx].completed = todo.completed;
         };
 
 
