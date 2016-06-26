@@ -5,7 +5,8 @@
 angular.module('todomvc')
     .controller('todoMvcCtrl', function ($scope) {
         $scope.message = 'Hello world!';
-        
+
+        /*처음 출력되는 todos*/
         $scope.todos =[{
             id: 1,
             title: '출근하기',
@@ -23,6 +24,7 @@ angular.module('todomvc')
 
         /* todos에서 해당 id항목 삭제 */
         $scope.remove = function (id) {
+            console.log("function remove");
             console.log("id::"+id)
             /*todos에서 해당항목 찾기*/
             var findIdx = $scope.todos.findIndex(function (todo) {
@@ -38,17 +40,39 @@ angular.module('todomvc')
 
 
         /* todos에서 addTodo */
-        $scope.addTodo = function (todoTitle) {
-            console.log("todoTitle::"+todoTitle);
+        $scope.addTodo = function (newTodoTitle) {
+            console.log("function addTodo");
+            console.log("todoTitle::"+newTodoTitle);
+
+            /*들어오는 값이 ''이라면 return*/
+            newTodoTitle = newTodoTitle.trim();
+            if (newTodoTitle === '') return;
+
 
             /*추가될 todo의 id 값 구하기*/
             var newTodoId = $scope.todos.length > 0 ? $scope.todos[$scope.todos.length -1].id + 1 : 1;
 
             var newTodo = {
                 id: newTodoId,
-                title: todoTitle,
+                title: newTodoTitle,
                 completed: false
             };
             $scope.todos.push(newTodo);
+
+            /*add input창을 초기화*/
+            $scope.newTodoTitle = '';
         };
+
+        $scope.clearCompleted = function () {
+            console.log("function clearCompleted");
+
+            var incompletedTodos = $scope.todos.filter(function (todo) {
+                return todo.completed === false;
+            });
+
+            angular.copy(incompletedTodos, $scope.todos);
+
+        };
+
+
     });
