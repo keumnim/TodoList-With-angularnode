@@ -1,10 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html ng-app="todomvc">
 <head>
     <meta charset="UTF-8">
-    <title>Todo-angular&node</title>
+    <title>TodoList-With-angularnode</title>
 </head>
-<body>
-    <t1>Todo</t1>
+<body ng-controller="todoMvcCtrl"> <!-- ng-app으로 todomvc 앵귤러 모듈 사용을 브라우저에게 알림 -->
+    <p>
+        {{ message }} <!-- "Hello world!" --><!---->
+    </p>
+
+    <!-- angular 로딩 -->
+    <script src="node_modules/angular/angular.js"></script>
+
+    <!-- 모듈 생성-->
+    <script>
+        angular.module('todomvc', []);
+    </script>
+
+    <!-- 컨드롤러 생성-->
+    <script>
+        angular.module('todomvc')
+                .controller('todoMvcCtrl', function ($scope) {
+
+                    $scope.message = 'Hello world!';
+
+                });
+    </script>
+
+
+
 </body>
 </html>
