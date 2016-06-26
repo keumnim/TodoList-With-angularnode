@@ -4,7 +4,51 @@
 */
 angular.module('todomvc')
     .controller('todoMvcCtrl', function ($scope) {
-
         $scope.message = 'Hello world!';
+        
+        $scope.todos =[{
+            id: 1,
+            title: '출근하기',
+            completed:true
+        },{
+            id: 2,
+            title: '데이트하기WMG',
+            completed:false
+        },{
+            id: 3,
+            title: 'Study',
+            completed:true
+        }];
 
-    })
+
+        /* todos에서 해당 id항목 삭제 */
+        $scope.remove = function (id) {
+            console.log("id::"+id)
+            /*todos에서 해당항목 찾기*/
+            var findIdx = $scope.todos.findIndex(function (todo) {
+                return todo.id === id;
+            });
+
+            console.log("findIdx::"+findIdx)
+            // remove
+            if (findIdx > -1) {
+                $scope.todos.splice(findIdx, 1);
+            };
+        };
+
+
+        /* todos에서 addTodo */
+        $scope.addTodo = function (todoTitle) {
+            console.log("todoTitle::"+todoTitle);
+
+            /*추가될 todo의 id 값 구하기*/
+            var newTodoId = $scope.todos.length > 0 ? $scope.todos[$scope.todos.length -1].id + 1 : 1;
+
+            var newTodo = {
+                id: newTodoId,
+                title: todoTitle,
+                completed: false
+            };
+            $scope.todos.push(newTodo);
+        };
+    });

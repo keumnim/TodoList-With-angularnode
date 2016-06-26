@@ -5,9 +5,27 @@
     <title>TodoList-With-angularnode</title>
 </head>
 <body ng-controller="todoMvcCtrl"> <!-- ng-app으로 todomvc 앵귤러 모듈 사용을 브라우저에게 알림 -->
-    <p>
-        {{ message }} <!-- "Hello world!" -->
-    </p>
+
+    <h1>Todo List</h1>
+
+    <!-- Add form -->
+    <form ng-submit="addTodo(newTodo)">
+        <input type="text" ng-model="newTodo" placeholder="what will you do?...">
+        <button type="submit">Add</button>
+    </form>
+
+    <!-- todo List-->
+    <ul ng-repeat="todo in todos">
+        <li>
+            <input type="checkbox" ng-model="todo.completed">
+            <input type="text" ng-model="todo.title">
+            <button type="button" ng-click="remove(todo.id)">Remove</button><!-- ng-click 디렉티브로 컨트롤러의 remove() 함수와 연력-->
+        </li>
+    </ul>
+
+
+
+    <pre>{{ todos | json }}</pre>
 
     <!-- angular 로딩 -->
     <script src="node_modules/angular/angular.js"></script>
@@ -17,9 +35,6 @@
 
     <!-- 컨드롤러 생성-->
     <script src="js/controllers/todoMvcCtrl"></script>
-
-
-
 
 </body>
 </html>
