@@ -1,42 +1,14 @@
 /**
  * Created by Keum_nim on 2016. 6. 26..
  * 컨트롤러 생성하기
+ * 사용자 이벤트를 감지하고 템플릿에 데이터를 보내주는 역할, 즉 템플릿과 직접 연결되는 부분
 */
 angular.module('todomvc')
-    .controller('todoMvcCtrl', function ($scope) {
+    .controller('todoMvcCtrl', function ($scope, todoMvcStorage) {
         $scope.message = 'Hello world!';
 
         /*처음 출력되는 todos*/
-        $scope.todos =[{
-            id: 1,
-            title: '출근하기',
-            completed:true
-        },{
-            id: 2,
-            title: '데이트하기WMG',
-            completed:false
-        },{
-            id: 3,
-            title: 'Study',
-            completed:true
-        }];
-
-
-        /* todos에서 해당 id항목 삭제 */
-        $scope.remove = function (todo) {
-            console.log("function remove");
-            console.log("id::"+todo.id)
-            /*todos에서 해당항목 찾기*/
-            var findIdx = $scope.todos.findIndex(function (t) {
-                return t.id === todo.id;
-            });
-
-            console.log("findIdx::"+findIdx)
-            // remove
-            if (findIdx > -1) {
-                $scope.todos.splice(findIdx, 1);
-            };
-        };
+        $scope.todos =todoMvcStorage.get();
 
 
         /* todos에서 addTodo */
@@ -49,34 +21,21 @@ angular.module('todomvc')
             var newTodoTitle = newTodoTitle.trim();
             if (newTodoTitle === '') return;
 
-
-            /*추가될 todo의 id 값 구하기*/
-            var newTodoId = $scope.todos.length > 0 ? $scope.todos[$scope.todos.length -1].id + 1 : 1;
-
-            var newTodo = {
-                id: newTodoId,
-                title: newTodoTitle,
-                completed: false
-            };
-            $scope.todos.push(newTodo);
+            /*service:post 호출*/
+            todoMvcStorage.post(newTodoTitle);
 
             /*add input창을 초기화*/
             $scope.newTodoTitle = '';
         };
+        
+        /* todos에서 해당 id항목 삭제 */
+        $scope.remove = function (todo) {
+            console.log("function remove");
+            console.log("id::"+todo.id)
 
-
-        /* todos에서 completed된 항목 Clear */
-        $scope.clearCompleted = function () {
-            console.log("function clearCompleted");
-
-            var incompletedTodos = $scope.todos.filter(function (todo) {
-                return todo.completed === false;
-            });
-
-            angular.copy(incompletedTodos, $scope.todos);
-
+            /*service:delete 호출*/
+            todoMvcStorage.delete(todo);
         };
-
 
         /* todos에 해당 todoe update */
         $scope.update = function (todo) {
@@ -84,15 +43,17 @@ angular.module('todomvc')
             if (!todo) return;
 
             console.log("id::"+todo.id)
-            /*todos에서 해당항목 찾기*/
-            var findIdx = $scope.todos.findIndex(function (t) {
-                return t.id === todo.id;
-            });
 
-            /*update todo*/
-            $scope.todos[findIdx].title = todo.title;
-            $scope.todos[findIdx].completed = todo.completed;
+            /*service:update 호출*/
+            todoMvcStorage.update(todo);
         };
 
+
+        /* todos에서 completed된 항목 Clear */
+        $scope.clearCompleted = function () {
+            console.log("function clearCompleted");
+            
+            todoMvcStorage.deleteCompleted()
+        };
 
     });
