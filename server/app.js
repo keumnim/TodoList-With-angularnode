@@ -40,13 +40,10 @@ app.get('/api/todos', function (req, res) {
 
 //Post /api/todos
 app.post('/api/todos', function(req, res){
-
     console.log("---------------------/api/todos -post::::"+req.body.title);
 
-    var newTodoId = todos.length > 0 ? todos[todos.length -1].id + 1 : 1;
-
     var newTodo = {
-        id: newTodoId,
+        id: todos.length > 0 ? todos[todos.length -1].id + 1 : 1,
         title: req.body.title,
         completed: false
     };
@@ -57,22 +54,50 @@ app.post('/api/todos', function(req, res){
 
 
 //Put /api/todos
-app.put('/api/todos', function(req, res){
+app.put('/api/todos/:id', function (req, res) {
+    console.log("---------------------/api/todos -put::::"+req.params.id);
+    // find todo
+    var id = parseInt(req.params.id, 10);
 
-    // console.log("---------------------/api/todos -post::::"+req.body.title);
-    //
-    // var newTodoId = todos.length > 0 ? todos[todos.length -1].id + 1 : 1;
-    //
-    // var newTodo = {
-    //     id: newTodoId,
-    //     title: req.body.title,
-    //     completed: false
-    // };
-    //
-    // todos.push(newTodo);
-    // res.json(newTodo);
+    /*todos에서 해당항목 찾기*/
+    var idx = todos.findIndex(function (todo) {
+        return todo.id === id;
+    });
+
+    if (idx === -1) {
+        return res.status(404).send();
+    }
+
+    // update todo
+    todos[idx].title = req.body.title;
+    todos[idx].completed = req.body.completed;
+
+    // return updated todo
+    // res.json(todos[idx]); //필요없음
 });
 
+//Delete /api/todos
+app.delete('/api/todos/:ids', function (req, res) {
+    console.log("---------------------/api/todos -delete::::"+req.params.id);
+    var ids = req.params.ids.split(',').map(function (id) {
+        return parseInt(id, 10);
+    });
+
+    ids.forEach(function (id) {
+        /*todos에서 해당항목 찾기*/
+        var foundTodo = todos.findIndex(function (todo) {
+            return todo.id === id
+        });
+        console.log("foundTodo::"+foundTodo)
+
+        //delete todo
+        if (foundTodo > -1) {
+            todos.splice(foundTodo, 1);
+        }
+    });
+
+    res.send();
+});
 
 
 app.get('/', function (req, res) {
