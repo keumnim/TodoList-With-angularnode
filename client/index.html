@@ -7,7 +7,7 @@
 </head>
 <body  ng-app="todomvc">
     <div ng-controller="todoMvcCtrl" class="container">  <!-- ng-app으로 todomvc 앵귤러 모듈 사용을 브라우저에게 알림 -->
-        <h1>Todo List</h1>
+        <h1><div id="clock"></div> Todo List </h1>
 
         <ul class="list-unstyled">
             <!-- Add form -->
@@ -52,18 +52,23 @@
             </ul>
         </div>
 
-        <pre>{{ todos | json }}</pre>
+        <!--<pre>{{ todos | json }}</pre>-->
 
         <!-- angular 로딩 -->
         <script src="../node_modules/angular/angular.js"></script>
+        <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+
         <!-- 모듈 로딩-->
         <script src="js/app.js"></script>
         <!-- 컨드롤러 로딩-->
-        <script src="js/controllers/todoMvcCtrl"></script>
+        <script src="js/controllers/todoMvcCtrl.js"></script>
         <!--서비스 로딩-->
         <script src="js/services/todoMvcStorage.js"></script>
         <!--다이렉드 로딩-->
         <script src="js/directives/todoItem.js"></script>
+
+        <!--현재 시간 표시 로딩-->
+        <script src="js/common/time.js"></script>
     </div>
 </body>
 </html>

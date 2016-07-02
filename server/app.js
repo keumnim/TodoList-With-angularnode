@@ -14,11 +14,11 @@ var todos = [{
     completed:true
 },{
     id: 2,
-    title: '데이트하기WMG',
+    title: '막간리딩, 하루 독서 30분',
     completed:false
 },{
     id: 3,
-    title: 'Study',
+    title: 'Programming 동아리 신청하기',
     completed:true
 }];
 
