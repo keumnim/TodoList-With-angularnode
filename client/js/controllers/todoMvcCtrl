@@ -8,7 +8,13 @@ angular.module('todomvc')
         $scope.message = 'Hello world!';
 
         /*처음 출력되는 todos*/
-        $scope.todos =todoMvcStorage.get();
+        //$scope.todos =todoMvcStorage.get();
+
+        /* 비동기 함수이미로 콜백 함수를 파라매터로 넘겼다.*/
+        todoMvcStorage.get(function (err, todos) {
+            if (err) return; //에러 발생시
+            $scope.todos = todos;
+        });
 
 
         /* todos에서 addTodo */
@@ -20,7 +26,7 @@ angular.module('todomvc')
             /*들어오는 값이 ''이라면 return*/
             var newTodoTitle = newTodoTitle.trim();
             if (newTodoTitle === '') return;
-
+            
             /*service:post 호출*/
             todoMvcStorage.post(newTodoTitle);
 
@@ -55,5 +61,6 @@ angular.module('todomvc')
             
             todoMvcStorage.deleteCompleted()
         };
+
 
     });

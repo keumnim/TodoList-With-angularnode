@@ -22,6 +22,10 @@ var todos = [{
     completed:true
 }];
 
+// static files
+app.use('/', express.static(path.join(__dirname, '../client')));
+app.use('/node_modules', express.static(path.join(__dirname, '../node_modules')));
+
 // body parser -post 사용을 위해 필요
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -29,13 +33,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //Get /api/todos 라우팅 설치
 app.get('/api/todos', function (req, res) {
+    console.log("---------------------/api/todos -get::::"+todos);
+
     res.json(todos);
 });
 
 //Post /api/todos
 app.post('/api/todos', function(req, res){
 
-    console.log("/api/todos -post::::"+req.body.title)
+    console.log("---------------------/api/todos -post::::"+req.body.title);
 
     var newTodoId = todos.length > 0 ? todos[todos.length -1].id + 1 : 1;
 
@@ -46,12 +52,28 @@ app.post('/api/todos', function(req, res){
     };
 
     todos.push(newTodo);
-    res.json(todos);
+    res.json(newTodo);
 });
 
-// static files
-app.use('/', express.static(path.join(__dirname, '../client')));
-app.use('/node_modules', express.static(path.join(__dirname, '../node_modules')));
+
+//Put /api/todos
+app.put('/api/todos', function(req, res){
+
+    // console.log("---------------------/api/todos -post::::"+req.body.title);
+    //
+    // var newTodoId = todos.length > 0 ? todos[todos.length -1].id + 1 : 1;
+    //
+    // var newTodo = {
+    //     id: newTodoId,
+    //     title: req.body.title,
+    //     completed: false
+    // };
+    //
+    // todos.push(newTodo);
+    // res.json(newTodo);
+});
+
+
 
 app.get('/', function (req, res) {
     res.sendfile('../client/index.html');

@@ -6,44 +6,38 @@
  */
 
 angular.module('todomvc')
-.factory('todoMvcStorage', function () {
+.factory('todoMvcStorage', function ($http) {
 
     var storage = {
-        todos: [{
-            id: 1,
-            title: '출근하기',
-            completed:true
-        },{
-            id: 2,
-            title: '데이트하기WMG',
-            completed:false
-        },{
-            id: 3,
-            title: 'Study',
-            completed:true
-        }],
+        todos: [],
 
         /*todo 목록 생성*/
-        get: function () {
+        get: function (callback) {
             console.log("Service::function get");
-            return storage.todos;
+
+            $http.get('/api/todos').then(function success(response) {    // GET /api/todos 요청
+                console.log("Service::function get::"+response);         // 성공
+
+//                storage.todos = response.data;
+                callback(null, angular.copy(response.data, storage.todos));
+            }, function error(err) {                                    // 실패
+                console.error(err);
+                callback(err, null);
+            });
         },
         /*todo 생성*/
         post: function (newTodoTitle) {
             console.log("Service::function put:"+newTodoTitle);
 
-             var todos = todos;
-             var newTodoId = storage.todos.length > 0 ?
-             storage.todos[storage.todos.length -1].id + 1 :
-                 1;
+            var body = {
+                title: newTodoTitle
+            };
 
-             var newTodo = {
-                id: newTodoId,
-                title: newTodoTitle,
-                completed: false
-              };
+            $http.post('/api/todos', body).then(function success(response) {
+                storage.todos.push(response.data);
+                //angular.copy(response.data, storage.todos)
 
-            storage.todos.push(newTodo);
+            });
         },
         /*todo 삭제*/
         delete: function(todo){
@@ -98,7 +92,7 @@ angular.module('todomvc')
 
             console.log(ids); //[1,3]
 
-            
+
         }
 
 
